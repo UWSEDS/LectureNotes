@@ -1,74 +1,49 @@
-"""pronto_utils.py"""
-
-import wget
+import requests
 import os
 import zipfile
 import pandas as pd
-
 import matplotlib.pyplot as plt
-import seaborn; seaborn.set()  # for plot stylings
 
 
-def download_if_needed(URL, filename):
+URL = "https://s3.amazonaws.com/pronto-data/open_data_year_two.zip"
+
+
+def download_if_needed(url, outfile):
     """
-    Download from URL to filename unless filename already exists
+    Download data from url and save to outfile
+    If outfile already exists, then do nothing
     """
-    if os.path.exists(filename):
-        print(filename, 'already exists')
-        return
+    if os.path.exists(outfile):
+        pass
     else:
-        print('downloading', filename)
-        wget.download(URL)
-
-
-def get_pronto_data():
-    """
-    Download pronto data, unless already downloaded
-    """
-    download_if_needed('https://s3.amazonaws.com/pronto-data/open_data_year_one.zip',
-                       'open_data_year_one.zip')
+        req = requests.get(url)
+        assert req.status_code == 200
+        with open(outfile, 'wb') as f:
+            f.write(req.content)
 
 
 def get_trip_data():
-    """
-    Fetch pronto data (if needed) and extract trips as dataframe
-    """
-    get_pronto_data()
-    zf = zipfile.ZipFile('open_data_year_one.zip')
-    file_handle = zf.open('2015_trip_data.csv')
-    return pd.read_csv(file_handle)
+    download_if_needed(URL, 'pronto_data.zip')
+    zf = zipfile.ZipFile('pronto_data.zip')
+    return pd.read_csv(zf.open('2016_trip_data.csv'))
 
 
-def get_weather_data():
-    """
-    Fetch pronto data (if needed) and extract weather as dataframe
-    """
-    get_pronto_data()
-    zf = zipfile.ZipFile('open_data_year_one.zip')
-    file_handle = zf.open('2015_weather_data.csv')
-    return pd.read_csv(file_handle)
+def plot_daily_rides():
+    """Plot ride count vs time for members and day users"""
+    plt.style.use('ggplot')
 
+    data = get_trip_data()
+    start_time = pd.DatetimeIndex(pd.to_datetime(data.starttime,
+                                                 infer_datetime_format=True))
+    groups = data.groupby([start_time.date, 'usertype'])
+    grouped_data = groups.trip_id.count().unstack()
 
-def get_trips_and_weather():
-    trips = get_trip_data()
-    weather = get_weather_data()
+    fig, ax = plt.subplots(2, figsize=(12, 6), sharex=True)
+    grouped_data['Member'].plot(ax=ax[0])
+    grouped_data['Short-Term Pass Holder'].plot(ax=ax[1])
 
-    # This is a nice way to access date info in a column
-    date = pd.DatetimeIndex(trips['starttime'])
+    ax[0].set_title('Annual Members')
+    ax[1].set_title('Short-term Pass Users')
 
-    # pivot table = two-dimensional groupby
-    trips_by_date = trips.pivot_table('trip_id', aggfunc='count',
-                                      index=date.date, columns='usertype')
-
-    weather = weather.set_index('Date')
-    weather.index = pd.DatetimeIndex(weather.index)
-    weather = weather.iloc[:-1]
-    return weather.join(trips_by_date)
-
-
-def plot_daily_totals():
-    data = get_trips_and_weather()
-    fig, ax = plt.subplots(2, figsize=(14, 6), sharex=True)
-    data['Annual Member'].plot(ax=ax[0], title='Annual Member')
-    data['Short-Term Pass Holder'].plot(ax=ax[1], title='Short-Term Pass Holder')
-    fig.savefig('daily_totals.png')
+    ax[0].set_ylabel('Number of riders')
+    ax[1].set_ylabel('Number of riders')
