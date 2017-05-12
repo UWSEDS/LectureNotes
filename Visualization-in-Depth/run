@@ -1,2 +1,2 @@
 #!/bin/bash
-bokeh serve --show $1
+bokeh serve --show $1.py
