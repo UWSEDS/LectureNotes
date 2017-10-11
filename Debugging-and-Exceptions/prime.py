@@ -10,6 +10,7 @@ def primeChecker(num):
   :returns bool:
   """
   is_prime = True
+  import pdb; pdb.set_trace()
   for i in range(1,num):
     if (num % i) == 0:
       is_prime = False
