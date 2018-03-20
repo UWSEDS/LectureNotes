@@ -13,7 +13,7 @@ import pandas as pd
 import sqlite3 as sql
 import sys
 
-SIZE = 20000
+SIZE = 15000
 
 parser = argparse.ArgumentParser(
     description="Create a SQL database from CSV files.")
@@ -28,7 +28,8 @@ csvfiles = sys.argv[2:]
 conn = sql.connect(dbname)
 for csvfile in csvfiles:
   df = pd.read_csv(csvfile)
-  columns = ['video_id', 'trending_date', 'publish_time']
+  columns = ['category_id', 'video_id', 'trending_date', 
+      'publish_time', 'comment_count']
   df = df.loc[0:SIZE, columns]
   table_name = csvfile.split('.')[0]
   df.to_sql(table_name, conn, if_exists="replace", index=False)
