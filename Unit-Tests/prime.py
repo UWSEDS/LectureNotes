@@ -10,7 +10,7 @@ def check_prime(num):
   :returns bool:
   """
   is_prime = True
-  for i in range(1,num):
+  for i in range(num):
     if (num % i) == 0:
       is_prime = False
       break
