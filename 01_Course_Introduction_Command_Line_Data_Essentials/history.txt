@@ -1,0 +1,49 @@
+  417  echo hi
+  418  echo hi there
+  419  ls
+  420  ls --help
+  421  ls -h
+  422  ls --help
+  423  ls tmp.csv
+  424  man ls
+  425  ls -l
+  426  ls -la
+  427  mkdir pronto
+  428  mkdir pronto
+  429  cd pronto/
+  430  ls 
+  431  cd ~
+  432  cd pronto/
+  433  ls
+  434  ls -la
+  435  ls ../../
+  436  ls ../../../
+  437  ls -la
+  438  nano README.txt
+  439  ls -l
+  440  cat README.txt 
+  441  head README.txt 
+  442  tail README.txt 
+  443  cp README.txt foo.txt
+  444  ls 
+  445  ls -l
+  446  rm foo.txt 
+  447  ls -l
+  448  cd ../
+  449  cd pronto/
+  450  curl https://data.seattle.gov/api/views/tw7j-dfaw/rows.csv?accessType=DOWNLOAD
+  451  curl https://data.seattle.gov/api/views/tw7j-dfaw/rows.csv?accessType=DOWNLOAD
+  452  curl https://data.seattle.gov/api/views/tw7j-dfaw/rows.csv?accessType=DOWNLOAD
+  453  curl --help
+  454  curl -o pronto.csv https://data.seattle.gov/api/views/tw7j-dfaw/rows.csv?accessType=DOWNLOAD
+  455  head pronto.csv 
+  456  rm pronto.csv 
+  457  cd ..
+  458  rmdir pronto/
+  459  rm pronto/README.txt 
+  460  rmdir pronto/
+  461  nano downdload_pronto.bash
+  462  mv downdload_pronto.bash download_pronto.bash
+  463  ls -l download_pronto.bash 
+  464  bash download_pronto.bash 
+  465  cat download_pronto.bash 
