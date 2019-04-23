@@ -1,6 +1,20 @@
 """
 Dash Components.
 To run: python app_conponents.py
+
+There are two parts to this example.
+
+The first are the components: Dropdown, Radio, and slider. Search
+for "Dash components" to find others.
+
+The second part of this example is how components appear.
+Dash controls layouts by using a hierachical grid structure. A
+grid is specified by the number of columns (the columns kw argument
+of html.Div); the number of rows is the number of elements 
+divided by the number of columns.
+
+A html.Div may be an element as well, with its own grid structures
+and substructures.
 """
 
 import dash
@@ -12,6 +26,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
+    html.Div([
     html.Label('Dropdown'),
     dcc.Dropdown(
         options=[
@@ -52,6 +67,10 @@ app.layout = html.Div([
         ],
         values=['MTL', 'SF']
     ),
+], style={'columnCount': 3}),
+
+
+    html.Div([
 
     html.Label('Text Input'),
     dcc.Input(value='MTL', type='text'),
@@ -63,7 +82,8 @@ app.layout = html.Div([
         marks={i: 'Label {}'.format(i) if i == 1 else str(i) for i in range(1, 6)},
         value=5,
     ),
-], style={'columnCount': 2})
+], style={'columnCount': 1})
+])
 
 if __name__ == '__main__':
   app.run_server(debug=True)
