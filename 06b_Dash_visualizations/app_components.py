@@ -34,7 +34,7 @@ app.layout = html.Div([
             {'label': u'Montréal', 'value': 'MTL'},
             {'label': 'San Francisco', 'value': 'SF'}
         ],
-        value='MTL'
+        value='SF'
     ),
 
     html.Label('Multi-Select Dropdown'),
