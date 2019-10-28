@@ -7,7 +7,7 @@ def CheckPrime(num):
   '''
   is_prime = True
   for i in range(num):
-    if (num % i) == 0: 
+    if (num%i) == 0: 
       is_prime = False
       break
   else:
