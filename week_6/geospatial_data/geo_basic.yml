@@ -19,3 +19,4 @@ dependencies:
     - typed-ast==1.4.1
     - utm==0.5.0
     - descartes
+    - folium
